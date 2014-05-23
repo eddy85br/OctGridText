@@ -1,5 +1,5 @@
 function indexes = drawLineXY(picture, x1, y1, x2, y2, color)
-	if isempty(color)
+	if ~ exist('color','var') || isempty(color)
 		display "Color undefined, then I'll pick 'white':"
 		color = 255
 	end
