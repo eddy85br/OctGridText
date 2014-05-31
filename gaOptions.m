@@ -8,4 +8,4 @@ gaOptions.MutationRate      = [];
 gaOptions.PopulationSize    = 100;
 gaOptions.Generations       = 30;
 % Run GA for GnuOctave
-x = gaGnuOct(@fitnessFunct, 32, gaOptions);
+% x = gaGnuOct(@fitnessFunct, 32, gaOptions);

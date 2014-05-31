@@ -51,7 +51,7 @@ for j=1:nger
         fits(i) = ffit(popx(i,:));
     end
     [xx iord] = sort(fits);
-    display([j xx(1)]);
+    disp(['Generation: ' num2str(j) "\t\tElite: " num2str(xx(1:nelite)')]);
     popx = popx(iord,:);
     newpop = popx;
     %% Crossing-over %%
