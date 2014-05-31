@@ -1,6 +1,6 @@
 function indexes = pair2find(pairs, M)
 	[rowsize colsize] = size(M);
-	numpairs = size(pairs, 2);
+	% numpairs = size(pairs, 2);
 	if ( (max(pairs(1, :)) > rowsize) || (max(pairs(2, :)) > colsize) )
 		indexes = ['Invalid X and Y positions to the size of the matrix. Matrix row size: ' rowsize '. Matrix column size: ' colsize '. Greater index of row and column: ' max(pairs(1, :)) ' e ' max(pairs(2, :)) '.'];
 	else
