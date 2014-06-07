@@ -34,9 +34,9 @@ function [r populations fitValues] = runTest(level)
 		
 		## Setting variables "GA Options" to gaGnuOct
 		gaOptions.InitialPopulation = [];
-		gaOptions.MutationRate      = 0.025;
+		gaOptions.MutationRate      = 0.25;
 		gaOptions.PopulationSize    = 5000;
-		gaOptions.EliteCount        = 4000;
+		gaOptions.EliteCount        = 3500;
 		gaOptions.Generations       = 20;
 		
 		[topIndividual pop popFitVals] = gaGnuOct(@(bits)fitGrid(slice, bits), 16, gaOptions);
