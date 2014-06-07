@@ -1,4 +1,4 @@
-function [r tops populations fitvalues] = runTest(level)
+function [r populations fitValues] = runTest(level)
 	r = 'error!';
 	switch level
 		case 1
@@ -23,8 +23,8 @@ function [r tops populations fitvalues] = runTest(level)
 		endif
 		slice = picture(rowNumber:sliceSize, :, 1);
 		disp(['rowNumber: ' num2str(rowNumber) "\t\tsliceSize: " num2str(sliceSize)]);
-		imshow(slice);
-		figure;
+		%imshow(slice);
+		%figure;
 		if ~ isbool(slice)
 			m = median(median(slice));
 			slice(find(slice > m * 1.1)) = 255;
@@ -41,9 +41,8 @@ function [r tops populations fitvalues] = runTest(level)
 		gaOptions.Generations       = 25;
 		
 		[topIndividual pop popFitVals] = gaGnuOct(@(bits)fitGrid(slice, bits), 16, gaOptions);
-		tops(sliceNumber, :)           = topIndividual;
 		populations(:, :, sliceNumber) = pop
-		fitvalues(:, sliceNumber)      = popFitVals;
+		fitValues(:, sliceNumber)      = popFitVals;
 		
 		%[rowSize, colSize] = size(slice);
 		%yPos = bits2bytes(topLines(pop, popFitVals));
@@ -53,10 +52,6 @@ function [r tops populations fitvalues] = runTest(level)
 		
 		%diff = abs(yPos(:,1) - yPos(:,2));
 		%mediana = median(diff);
-		#media = mean(diff);
-		#diffMetric = mediana + media;
-		
-		#yFiltered = yPos(find(diff) <= diffMetric, :);
 		%yFiltered = yPos(find(diff <= mediana * 1.25), :);
 		
 		%xPos = [ones(size(yFiltered)(1),1), repmat(colSize, size(yFiltered)(1),1)];
@@ -67,10 +62,12 @@ function [r tops populations fitvalues] = runTest(level)
 	figure;
 	
 	for sliceI = 1:sliceNumber
-		pop        = populations(:, :, sliceNumber);
-		popFitVals = fitvalues(:, sliceNumber);
+		pop        = populations(:, :, sliceI);
+		popFitVals = fitValues(:, sliceI);
 		
 		yPos = bits2bytes(topLines(pop, popFitVals));
+		slicePos = (sliceI - 1) * 254;
+		yPos = yPos .+ slicePos;
 		
 		yPos(find(yPos <= 0)) = 1;
 		yPos(find(yPos > numRows)) = numRows;
