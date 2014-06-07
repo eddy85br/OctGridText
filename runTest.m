@@ -58,6 +58,7 @@ function [r populations fitValues] = runTest(level)
 		%drawLine(slice, yFiltered, xPos);
 		%figure;
 	end
+	
 	imshow(picture);
 	figure;
 	
@@ -66,9 +67,12 @@ function [r populations fitValues] = runTest(level)
 		popFitVals = fitValues(:, sliceI);
 		
 		yPos = bits2bytes(topLines(pop, popFitVals));
+		disp('yPos antes:');
+		disp(yPos);
 		slicePos = (sliceI - 1) * 254;
 		yPos = yPos .+ slicePos;
-		
+		disp('yPos depois:');
+		disp(yPos);
 		yPos(find(yPos <= 0)) = 1;
 		yPos(find(yPos > numRows)) = numRows;
 		
@@ -82,6 +86,7 @@ function [r populations fitValues] = runTest(level)
 		
 		xPos = [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)];
 		drawLine(picture, yFiltered, xPos);
+		figure;
 	end
 	r = picture;
 
