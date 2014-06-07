@@ -13,6 +13,8 @@ function [r populations fitValues] = runTest(level)
 			picture = imread('./sampleData/fasta_dna90.png');
 		case 6
 			picture = imread('./sampleData/fasta_dna20.png');
+		case 7
+			picture = imread('./sampleData/fasta_dna20.jpg');
 		otherwise
 			picture = level;
 	end
