@@ -60,19 +60,18 @@ function [r populations fitValues] = runTest(level)
 	end
 	
 	imshow(picture);
-	figure;
+	xPos      = [];
+	yFiltered = [];
 	
 	for sliceI = 1:sliceNumber
 		pop        = populations(:, :, sliceI);
 		popFitVals = fitValues(:, sliceI);
 		
 		yPos = bits2bytes(topLines(pop, popFitVals));
-		disp('yPos antes:');
-		disp(yPos);
+		
 		slicePos = (sliceI - 1) * 254;
 		yPos = yPos .+ slicePos;
-		disp('yPos depois:');
-		disp(yPos);
+		
 		yPos(find(yPos <= 0)) = 1;
 		yPos(find(yPos > numRows)) = numRows;
 		
@@ -82,11 +81,11 @@ function [r populations fitValues] = runTest(level)
 		#diffMetric = mediana + media;
 		
 		#yFiltered = yPos(find(diff) <= diffMetric, :);
-		yFiltered = yPos(find(diff <= mediana * 1.25), :);
+		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1.25), :) ];
 		
-		xPos = [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)];
-		drawLine(picture, yFiltered, xPos);
-		figure;
+		xPos = [ xPos; [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)] ];
 	end
+	figure;
+	drawLine(picture, yFiltered, xPos);
 	r = picture;
 
