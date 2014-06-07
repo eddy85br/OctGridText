@@ -11,6 +11,8 @@ function [r populations fitValues] = runTest(level)
 			picture = imread('./sampleData/DNA.jpg');
 		case 5
 			picture = imread('./sampleData/fasta_dna90.png');
+		case 6
+			picture = imread('./sampleData/fasta_dna20.png');
 		otherwise
 			picture = level;
 	end
@@ -82,7 +84,7 @@ function [r populations fitValues] = runTest(level)
 		#diffMetric = mediana + media;
 		
 		#yFiltered = yPos(find(diff) <= diffMetric, :);
-		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 0.85), :) ];
+		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1), :) ];
 		
 		xPos = [ xPos; [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)] ];
 	end
