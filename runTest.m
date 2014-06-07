@@ -26,18 +26,18 @@ function [r populations fitValues] = runTest(level)
 		
 		if ~ isbool(slice)
 			m = median(median(slice));
-			slice(find(slice > m * 1.1)) = 255;
-			slice(find(slice < m * 0.9)) = 0;
+			slice(find(slice > m * 1)) = 255;
+			slice(find(slice < m * 1)) = 0;
 			#slice(find(slice >  60)) = 255;
 			#slice(find(slice <= 60)) = 0;
 		endif
 		
 		## Setting variables "GA Options" to gaGnuOct
 		gaOptions.InitialPopulation = [];
-		gaOptions.MutationRate      = 0.5;
+		gaOptions.MutationRate      = 0.025;
 		gaOptions.PopulationSize    = 5000;
-		gaOptions.EliteCount        = 2500;
-		gaOptions.Generations       = 25;
+		gaOptions.EliteCount        = 4000;
+		gaOptions.Generations       = 20;
 		
 		[topIndividual pop popFitVals] = gaGnuOct(@(bits)fitGrid(slice, bits), 16, gaOptions);
 		populations(:, :, sliceNumber) = pop;
@@ -58,7 +58,7 @@ function [r populations fitValues] = runTest(level)
 		%figure;
 	end
 	
-	imshow(picture);
+	#imshow(picture);
 	xPos      = [];
 	yFiltered = [];
 	
@@ -80,11 +80,11 @@ function [r populations fitValues] = runTest(level)
 		#diffMetric = mediana + media;
 		
 		#yFiltered = yPos(find(diff) <= diffMetric, :);
-		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1.25), :) ];
+		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 0.85), :) ];
 		
 		xPos = [ xPos; [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)] ];
 	end
 	figure;
-	drawLine(picture, yFiltered, xPos);
+	[idx picture] = drawLine(picture, yFiltered, xPos);
 	r = picture;
 

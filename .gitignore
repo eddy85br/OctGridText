@@ -2,3 +2,4 @@
 *.dat
 *.mat
 *.bin
+octave-core
