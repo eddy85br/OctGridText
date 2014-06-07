@@ -41,7 +41,7 @@ function [r populations fitValues] = runTest(level)
 		gaOptions.Generations       = 25;
 		
 		[topIndividual pop popFitVals] = gaGnuOct(@(bits)fitGrid(slice, bits), 16, gaOptions);
-		populations(:, :, sliceNumber) = pop
+		populations(:, :, sliceNumber) = pop;
 		fitValues(:, sliceNumber)      = popFitVals;
 		
 		%[rowSize, colSize] = size(slice);
