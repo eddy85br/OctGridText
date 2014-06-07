@@ -13,7 +13,7 @@ function [r populations fitValues] = runTest(level)
 			picture = level;
 	end
 	
-	[numRows, numCols] = size(picture);                 # Get the image size
+	[numRows, numCols] = size(picture);		# Get the image size
 	sliceNumber = 0;
 	for rowNumber = 1:255:numRows
 		sliceNumber++;
@@ -23,8 +23,7 @@ function [r populations fitValues] = runTest(level)
 		endif
 		slice = picture(rowNumber:sliceSize, :, 1);
 		disp(['rowNumber: ' num2str(rowNumber) "\t\tsliceSize: " num2str(sliceSize)]);
-		%imshow(slice);
-		%figure;
+		
 		if ~ isbool(slice)
 			m = median(median(slice));
 			slice(find(slice > m * 1.1)) = 255;
