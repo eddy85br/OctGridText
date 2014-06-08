@@ -1,5 +1,5 @@
-function [r populations fitValues] = runTest(level)
-	r = 'error!';
+function [idx img populations fitValues] = runTest(level)
+	idx = 'error!';
 	switch level
 		case 1
 			picture = imread('./sampleData/easyDNA.png');
@@ -19,6 +19,12 @@ function [r populations fitValues] = runTest(level)
 			picture = level;
 	end
 	
+	if ~ isbool(picture)
+		m = median(median(median(picture)));
+		picture(find(picture >  m * 0.8)) = max(max(max(picture)));
+		picture(find(picture <= m * 0.8)) = min(min(min(picture)));
+	endif
+	
 	[numRows, numCols] = size(picture);		# Get the image size
 	sliceNumber = 0;
 	for rowNumber = 1:255:numRows
@@ -29,14 +35,6 @@ function [r populations fitValues] = runTest(level)
 		endif
 		slice = picture(rowNumber:sliceSize, :, 1);
 		disp(['rowNumber: ' num2str(rowNumber) "\t\tsliceSize: " num2str(sliceSize)]);
-		
-		if ~ isbool(slice)
-			m = median(median(slice));
-			slice(find(slice > m * 1)) = 255;
-			slice(find(slice < m * 1)) = 0;
-			#slice(find(slice >  60)) = 255;
-			#slice(find(slice <= 60)) = 0;
-		endif
 		
 		## Setting variables "GA Options" to gaGnuOct
 		gaOptions.InitialPopulation = [];
@@ -86,11 +84,10 @@ function [r populations fitValues] = runTest(level)
 		#diffMetric = mediana + media;
 		
 		#yFiltered = yPos(find(diff) <= diffMetric, :);
-		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1), :) ];
+		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1.25), :) ];
 		
 		xPos = [ xPos; [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)] ];
 	end
 	figure;
-	[idx picture] = drawLine(picture, yFiltered, xPos);
-	r = picture;
+	[idx img] = drawLine(picture, yFiltered, xPos);
 
