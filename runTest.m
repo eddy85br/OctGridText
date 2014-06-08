@@ -84,7 +84,7 @@ function [idx img populations fitValues] = runTest(level)
 		#diffMetric = mediana + media;
 		
 		#yFiltered = yPos(find(diff) <= diffMetric, :);
-		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1.25), :) ];
+		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1.10), :) ];
 		
 		xPos = [ xPos; [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)] ];
 	end
