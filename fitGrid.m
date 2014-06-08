@@ -1,19 +1,24 @@
 function out = fitGrid(picture, bits)
 	[rowSize, colSize] = size(picture);              %# Get the image size
 	yPos = bits2bytes(bits);
+	out = 1;
 	if (yPos(1) <= 0)
 		yPos(1) = 1;
+		out += 500;
 	endif
 	if (yPos(2) <= 0)
 		yPos(2) = 1;
+		out += 500;
 	endif
 	if (yPos(1) > rowSize)
 		yPos(1) = rowSize;
+		out += 500;
 	endif
 	if (yPos(2) > rowSize)
 		yPos(2) = rowSize;
+		out += 500;
 	endif
 	indexes = getLine(picture, [yPos(1) 1], [yPos(2) colSize]);	%% indexes = getLine(picture, p1, p2)
 	rowLine = picture(indexes);
-	out = sum(rowLine) * -1;
+	out += sum(rowLine) * -1;
 
