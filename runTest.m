@@ -32,7 +32,7 @@ function [idx img populations fitValues] = runTest(level)
 		#picture = sum(picture, 3);
 	endif
 	sliceNumber = 0;
-	# Processe 255 rows at a time, cause we are passing only a pair of 8 bits per point (yPosition)
+	# Process 255 rows at a time, because we are passing only a pair of 8 bits per point (yPosition, 0 to 255)
 	for rowNumber = 1:255:numRows
 		sliceNumber++;
 		sliceSize = rowNumber + 254;
