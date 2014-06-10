@@ -1,5 +1,5 @@
-function [idx img populations fitValues] = runTest(level)
-	idx = 'error!';
+function [Ys img populations fitValues] = runTest(level)
+	Ys = 'error!';
 	switch level
 		case 1
 			picture = imread('./sampleData/easyDNA.png');
@@ -20,17 +20,32 @@ function [idx img populations fitValues] = runTest(level)
 	end
 	original = picture;
 	
-	if ~ isbool(picture)							# Transform to a Black & White image
-		m = median(median(median(picture)));
-		picture(find(picture >  m * 0.8)) = max(max(max(picture)));
-		picture(find(picture <= m * 0.8)) = min(min(min(picture)));
-	endif
-	
-	[numRows, numCols, numZ] = size(picture);		# Get the image size
+	[numRows, numCols, numZ] = size(picture);	# Get the image size
+	## Transform various types of images in Black & White boolean (logical) images:
 	if numZ > 1
-		picture = picture(:, :, 1);					# Use only 1 color channel, converted into a B&W image
-		#picture = sum(picture, 3);
+		picture = sum(picture, 3);				# Fusion of the 3 color channels
+		picture = picture ./ max(max(picture));
+		if ~ isbool(picture)
+			m = median(median(picture));
+			picture(find(picture >  m * 0.8)) = 1;
+			picture(find(picture <= m * 0.8)) = 0;
+			picture = logical(picture);
+		endif
+	else
+		if ~ isbool(picture)
+			m = median(median(picture));
+			picture(find(picture >  m * 0.8)) = max(max(picture));
+			picture(find(picture <= m * 0.8)) = min(min(picture));
+			picture = logical(picture);
+		endif
 	endif
+	## All boolean images. Converted to 8-bit integer B&W images:
+	picture = uint8(picture);
+	picture = picture .* 255;
+	
+	xPos      = [];
+	yFiltered = [];
+	
 	sliceNumber = 0;
 	# Process 255 rows at a time, because we are passing only a pair of 8 bits per point (yPosition, 0 to 255)
 	for rowNumber = 1:255:numRows
@@ -40,7 +55,7 @@ function [idx img populations fitValues] = runTest(level)
 			sliceSize = numRows;
 		endif
 		slice = picture(rowNumber:sliceSize, :);
-		disp(['rowNumber: ' num2str(rowNumber) "\t\tsliceSize: " num2str(sliceSize)]);
+		%# disp(['rowNumber: ' num2str(rowNumber) "\t\tsliceSize: " num2str(sliceSize)]);
 		
 		## Setting variables "GA Options" to gaGnuOct
 		gaOptions.InitialPopulation = [];
@@ -69,8 +84,6 @@ function [idx img populations fitValues] = runTest(level)
 	end
 	
 	#figure; imshow(picture);
-	xPos      = [];
-	yFiltered = [];
 	
 	for sliceI = 1:sliceNumber
 		pop        = populations(:, :, sliceI);
@@ -95,8 +108,11 @@ function [idx img populations fitValues] = runTest(level)
 		
 		xPos = [ xPos; [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)] ];
 	end
+	
+	Ys = yFiltered;
+	
+	#figure;
+	#img = drawLine(picture, yFiltered, xPos);
 	figure;
-	[idx img] = drawLine(picture, yFiltered, xPos);
-	figure;
-	[idx img] = drawLine(original, yFiltered, xPos);
+	img = drawLine(original, yFiltered, xPos);
 

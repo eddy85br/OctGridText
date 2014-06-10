@@ -1,7 +1,7 @@
-function indexes = drawLineXY(picture, x1, y1, x2, y2, color)
+function indexes = getLineXY(picture, x1, y1, x2, y2, color)
 	if ~ exist('color','var') || isempty(color)
-		display "Color undefined, then I'll pick 'white':"
-		color = 255
+		display "Color undefined, then I'll pick 'black':";
+		color = 0;
 	end
 	% distances according to both axes
 	xn = abs(x2-x1);

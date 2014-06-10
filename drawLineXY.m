@@ -1,7 +1,7 @@
-function indexes = drawLineXY(picture, x1, y1, x2, y2, color)
+function [indexes pic] = drawLineXY(picture, x1, y1, x2, y2, color)
 	if ~ exist('color','var') || isempty(color)
-		display "Color undefined, then I'll pick 'white':"
-		color = 255
+		display "Color undefined, then I'll pick 'black':";
+		color = 0;
 	end
 	% distances according to both axes
 	xn = abs(x2-x1);
@@ -20,8 +20,9 @@ function indexes = drawLineXY(picture, x1, y1, x2, y2, color)
 	% 2-D indexes of line are saved in (xc, yc), and
 	% 1-D indexes are calculated here:
 	indexes = sub2ind( size(picture), yc, xc );
-
+	
 	% draw line on the image (change value of '255' to one that you need)
 	picture(indexes) = color;
+	pic = picture;
 	imshow(picture);
 
