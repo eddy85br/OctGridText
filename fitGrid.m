@@ -1,5 +1,5 @@
 function out = fitGrid(picture, bits)
-	[rowCount, colCount] = size(picture);              %# Get the image size
+	[rowCount, colCount] = size(picture);              ## Get the image size
 	yPos = bits2bytes(bits);
 	out = 0;
 	if (yPos(1) <= 0)
@@ -18,7 +18,7 @@ function out = fitGrid(picture, bits)
 		yPos(2) = rowCount;
 		out += (colCount * 10);
 	endif
-	indexes = getLine(picture, [yPos(1) 1], [yPos(2) colCount]);	%% indexes = getLine(picture, p1, p2)
+	indexes = getLine(picture, [yPos(1) 1], [yPos(2) colCount]);	## indexes = getLine(picture, p1, p2)
 	rowLine = picture(indexes);
 	out += sum(rowLine) * -1;
 
