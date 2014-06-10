@@ -106,7 +106,7 @@ function [Ys img populations fitValues] = runTest(level)
 		yFiltered = [ yFiltered; yPos(find(diff <= mediana * 1.10), :) ];
 		#yFiltered = [yFiltered; yPos];
 		
-		xPos = [ xPos; [ones(size(yFiltered)(1),1), repmat(numCols, size(yFiltered)(1),1)] ];
+		xPos = [ xPos; [ones(size(yFiltered)(1), 1), repmat(numCols, size(yFiltered)(1), 1)] ];
 	end
 	
 	Ys = yFiltered;
